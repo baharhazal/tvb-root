@@ -29,18 +29,19 @@
 #
 
 import os
-import typing
 import uuid
+import typing
 from uuid import UUID
 
 from tvb.basic.logger.builder import get_logger
 from tvb.basic.neotraits.api import HasTraits
-from tvb.core.entities.file.files_helper import FilesHelper
+from tvb.core.neotraits.h5 import H5File
 from tvb.core.entities.generic_attributes import GenericAttributes
 from tvb.core.entities.model.model_datatype import DataType
 from tvb.core.entities.storage import dao
+from tvb.core.entities.file.files_helper import FilesHelper
 from tvb.core.neocom._registry import Registry
-from tvb.core.neotraits.h5 import H5File
+from tvb.core.data_encryption_handler import DataEncryptionHandler
 
 H5_EXTENSION = '.h5'
 
@@ -162,6 +163,7 @@ class DirLoader(object):
             subdt = getattr(datatype, traited_attr.field_name)
             if subdt is not None:  # Because a non required reference may be not populated
                 self.store(subdt)
+        DataEncryptionHandler.push_folder_to_sync(FilesHelper.get_project_folder_from_h5(path))
 
     def path_for(self, h5_file_class, gid):
         """

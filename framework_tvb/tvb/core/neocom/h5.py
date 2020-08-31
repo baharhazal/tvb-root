@@ -41,6 +41,7 @@ from tvb.core.neocom._h5loader import Loader, DirLoader, TVBLoader
 from tvb.core.neocom._registry import Registry
 from tvb.core.neotraits.h5 import H5File, ViewModelH5
 from tvb.core.neotraits.view_model import ViewModel
+from tvb.core.data_encryption_handler import DataEncryptionHandler
 from tvb.core.utils import date2string, string2date
 
 REGISTRY = Registry()
@@ -138,6 +139,7 @@ def store_complete(datatype, base_dir, generic_attributes=GenericAttributes()):
         # Store empty Generic Attributes, in case the file is saved no through ABCAdapter it can still be used
         f.store_generic_attributes(generic_attributes)
 
+    DataEncryptionHandler.push_folder_to_sync(os.path.dirname(base_dir))
     return index_inst
 
 
@@ -236,6 +238,8 @@ def store_view_model(view_model, base_dir):
                     store_view_model(model_attr[idx], base_dir)
             else:
                 store_view_model(model_attr, base_dir)
+
+    DataEncryptionHandler.push_folder_to_sync(os.path.dirname(base_dir))
     return h5_path
 
 
@@ -302,7 +306,7 @@ def gather_all_references_of_view_model(gid, base_dir, ref_files):
 
     with ViewModelH5(vm_path, view_model) as vm_h5:
         references = vm_h5.gather_references()
-        uuids = vm_h5.gather_datatypes_references()
+        uuids = vm_h5.gather_references_by_uuid()
 
         for _, gid in references:
             if not gid:
