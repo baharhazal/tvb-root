@@ -34,7 +34,7 @@ import uuid
 from datetime import datetime
 
 from tvb.basic.neotraits.api import HasTraits
-from tvb.core.entities.file.data_encryption_handler import DataEncryptionHandler
+from tvb.core.entities.file.data_encryption_handler import encryption_handler
 from tvb.core.entities.generic_attributes import GenericAttributes
 from tvb.core.entities.load import load_entity_by_gid
 from tvb.core.entities.model.model_datatype import DataType
@@ -139,7 +139,7 @@ def store_complete(datatype, base_dir, generic_attributes=GenericAttributes()):
         # Store empty Generic Attributes, in case the file is saved no through ABCAdapter it can still be used
         f.store_generic_attributes(generic_attributes)
 
-    DataEncryptionHandler.push_folder_to_sync(os.path.dirname(base_dir))
+    encryption_handler.push_folder_to_sync(os.path.dirname(base_dir))
     return index_inst
 
 
@@ -239,7 +239,7 @@ def store_view_model(view_model, base_dir):
             else:
                 store_view_model(model_attr, base_dir)
 
-    DataEncryptionHandler.push_folder_to_sync(os.path.dirname(base_dir))
+    encryption_handler.push_folder_to_sync(os.path.dirname(base_dir))
     return h5_path
 
 
