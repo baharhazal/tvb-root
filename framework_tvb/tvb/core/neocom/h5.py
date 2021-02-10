@@ -34,6 +34,7 @@ import uuid
 from datetime import datetime
 
 from tvb.basic.neotraits.api import HasTraits
+from tvb.core.entities.file.data_encryption_handler import DataEncryptionHandler
 from tvb.core.entities.generic_attributes import GenericAttributes
 from tvb.core.entities.load import load_entity_by_gid
 from tvb.core.entities.model.model_datatype import DataType
@@ -41,7 +42,6 @@ from tvb.core.neocom._h5loader import Loader, DirLoader, TVBLoader
 from tvb.core.neocom._registry import Registry
 from tvb.core.neotraits.h5 import H5File, ViewModelH5
 from tvb.core.neotraits.view_model import ViewModel
-from tvb.core.data_encryption_handler import DataEncryptionHandler
 from tvb.core.utils import date2string, string2date
 
 REGISTRY = Registry()
